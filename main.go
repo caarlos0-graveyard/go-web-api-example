@@ -36,6 +36,8 @@ func main() {
 
 	mux.Path("/beers").Methods(http.MethodGet).HandlerFunc(controller.BeersIndex(ds))
 	mux.Path("/beers").Methods(http.MethodPost).HandlerFunc(controller.CreateBeer(ds))
+	mux.Path("/beers/{id}").Methods(http.MethodGet).HandlerFunc(controller.GetBeer(ds))
+	mux.Path("/beers/{id}").Methods(http.MethodDelete).HandlerFunc(controller.DeleteBeer(ds))
 
 	var server = &http.Server{
 		Handler:      httplog.New(mux),
