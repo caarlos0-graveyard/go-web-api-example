@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/apex/log"
-	"github.com/caarlos0/watchub/datastore"
+	"github.com/caarlos0/go-web-api-example/datastore"
 	"github.com/jmoiron/sqlx"
 )
 
