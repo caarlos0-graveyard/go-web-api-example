@@ -1,7 +1,6 @@
-package server_test
+package server
 
 import (
-	"github.com/caarlos0/go-web-api-example/server"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -10,7 +9,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	s := server.New()
+	s := New()
 	go func() {
 		s.ListenAndServe()
 	}()
