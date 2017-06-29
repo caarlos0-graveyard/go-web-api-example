@@ -1,12 +1,12 @@
 package server_test
 
 import (
-	"testing"
-	"os"
-	"io/ioutil"
-	"net/http"
 	"github.com/caarlos0/go-web-api-example/server"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"testing"
 )
 
 func TestMain(m *testing.M) {
