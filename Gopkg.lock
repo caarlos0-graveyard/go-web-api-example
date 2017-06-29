@@ -20,12 +20,6 @@
   revision = "4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/caarlos0/go-web-api-example"
-  packages = ["controller","datastore","datastore/database","model"]
-  revision = "5e88111f7a1b01334ba73c8ad661f305104427cf"
-
-[[projects]]
   name = "github.com/go-logfmt/logfmt"
   packages = ["."]
   revision = "390ab7935ee28ec6b286364bba9b4dd6410cb3d5"
@@ -106,6 +100,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ec07aaa61ab144e8b8d9690cbaa66e151eec348b755fd94fbf5d1963b697249e"
+  inputs-digest = "eee150200864f534f794b0dee907091a656787a31f1e95621ee20d71a4b77408"
   solver-name = "gps-cdcl"
   solver-version = 1
