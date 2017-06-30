@@ -21,11 +21,7 @@ func main() {
 	log.Info("starting up...")
 
 	var db = database.Connect("postgres://localhost:5432/beers?sslmode=disable")
-	defer func() {
-		if err := db.Close(); err != nil {
-			log.WithError(err).Error("failed to close connection with database")
-		}
-	}()
+	defer db.Close()
 	var ds = database.New(db)
 
 	var mux = mux.NewRouter()
@@ -34,10 +30,11 @@ func main() {
 		fmt.Fprintf(w, "OK")
 	})
 
-	mux.Path("/beers").Methods(http.MethodGet).HandlerFunc(controller.BeersIndex(ds))
-	mux.Path("/beers").Methods(http.MethodPost).HandlerFunc(controller.CreateBeer(ds))
-	mux.Path("/beers/{id}").Methods(http.MethodGet).HandlerFunc(controller.GetBeer(ds))
-	mux.Path("/beers/{id}").Methods(http.MethodDelete).HandlerFunc(controller.DeleteBeer(ds))
+	var beersMux = mux.PathPrefix("/beers").Subrouter()
+	beersMux.Methods(http.MethodGet).HandlerFunc(controller.BeersIndex(ds))
+	beersMux.Methods(http.MethodPost).HandlerFunc(controller.CreateBeer(ds))
+	beersMux.Path("{id}").Methods(http.MethodGet).HandlerFunc(controller.GetBeer(ds))
+	beersMux.Path("{id}").Methods(http.MethodDelete).HandlerFunc(controller.DeleteBeer(ds))
 
 	var server = &http.Server{
 		Handler:      httplog.New(mux),
