@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func BeersIndex(ds datastore.Datastore) http.HandlerFunc {
+func BeersIndex(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		beers, err := ds.AllBeers()
 		if err != nil {
@@ -24,7 +24,7 @@ func BeersIndex(ds datastore.Datastore) http.HandlerFunc {
 	}
 }
 
-func CreateBeer(ds datastore.Datastore) http.HandlerFunc {
+func CreateBeer(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var beer model.Beer
 		defer r.Body.Close()
@@ -34,11 +34,13 @@ func CreateBeer(ds datastore.Datastore) http.HandlerFunc {
 		}
 		if err := ds.CreateBeer(beer); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
+		w.WriteHeader(http.StatusCreated)
 	}
 }
 
-func DeleteBeer(ds datastore.Datastore) http.HandlerFunc {
+func DeleteBeer(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := getIdFromPath(r)
 		if err != nil {
@@ -51,7 +53,7 @@ func DeleteBeer(ds datastore.Datastore) http.HandlerFunc {
 	}
 }
 
-func GetBeer(ds datastore.Datastore) http.HandlerFunc {
+func GetBeer(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := getIdFromPath(r)
 		if err != nil {
