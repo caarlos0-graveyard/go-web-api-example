@@ -8,6 +8,7 @@ import (
 	"github.com/apex/httplog"
 	"github.com/apex/log"
 	"github.com/apex/log/handlers/logfmt"
+	"github.com/caarlos0/go-web-api-example/config"
 	"github.com/caarlos0/go-web-api-example/controller"
 	"github.com/caarlos0/go-web-api-example/datastore/database"
 	"github.com/gorilla/mux"
@@ -19,8 +20,9 @@ func main() {
 	log.SetHandler(logfmt.Default)
 	log.SetLevel(log.InfoLevel)
 	log.Info("starting up...")
+	var cfg = config.Get()
 
-	var db = database.Connect("postgres://localhost:5432/beers?sslmode=disable")
+	var db = database.Connect(cfg.DatabaseURL)
 	defer db.Close()
 	var ds = database.New(db)
 
@@ -38,7 +40,7 @@ func main() {
 
 	var server = &http.Server{
 		Handler:      httplog.New(mux),
-		Addr:         ":3000",
+		Addr:         ":" + cfg.Port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
