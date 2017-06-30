@@ -10,7 +10,17 @@ import (
 	"github.com/caarlos0/go-web-api-example/model"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 )
+
+var beersCounter = prometheus.NewCounter(prometheus.CounterOpts{
+	Name: "beers_created",
+	Help: "Number of beers created",
+})
+
+func init() {
+	prometheus.MustRegister(beersCounter)
+}
 
 func BeersIndex(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +52,7 @@ func CreateBeer(ds datastore.BeersDatastore) http.HandlerFunc {
 			return
 		}
 		w.WriteHeader(http.StatusCreated)
+		beersCounter.Inc()
 	}
 }
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -32,9 +31,6 @@ func main() {
 
 	var mux = mux.NewRouter()
 	mux.Path("/metrics").Handler(promhttp.Handler())
-	mux.Path("/status").Methods(http.MethodGet).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "OK")
-	})
 
 	var beersMux = mux.PathPrefix("/beers").Subrouter()
 	beersMux.Methods(http.MethodGet).HandlerFunc(controller.BeersIndex(ds))
