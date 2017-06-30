@@ -36,8 +36,10 @@ func TestBeersIndexSuccess(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
 	var beers []model.Beer
-	json.NewDecoder(res.Body).Decode(&beers)
-	defer res.Body.Close()
+	_ = json.NewDecoder(res.Body).Decode(&beers)
+	defer func() {
+		_ = res.Body.Close()
+	}()
 	assert.Equal(mockedBeers, beers)
 }
 

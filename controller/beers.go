@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/apex/log"
 	"github.com/caarlos0/go-web-api-example/datastore"
 	"github.com/caarlos0/go-web-api-example/model"
 	"github.com/gorilla/mux"
@@ -27,7 +28,11 @@ func BeersIndex(ds datastore.BeersDatastore) http.HandlerFunc {
 func CreateBeer(ds datastore.BeersDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var beer model.Beer
-		defer r.Body.Close()
+		defer func() {
+			if err := r.Body.Close(); err != nil {
+				log.WithError(err).Error("failed to close body")
+			}
+		}()
 		if err := json.NewDecoder(r.Body).Decode(&beer); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

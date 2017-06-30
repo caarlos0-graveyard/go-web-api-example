@@ -23,7 +23,11 @@ func main() {
 	var cfg = config.Get()
 
 	var db = database.Connect(cfg.DatabaseURL)
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.WithError(err).Error("failed to close database connections")
+		}
+	}()
 	var ds = database.New(db)
 
 	var mux = mux.NewRouter()
